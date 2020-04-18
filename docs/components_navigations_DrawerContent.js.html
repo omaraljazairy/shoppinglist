@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/navigations/DrawerContent.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/navigations/DrawerContent.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useState} from 'react';
+import {StyleSheet, View, SafeAreaView} from 'react-native';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import Fonts from '../../constants/Fonts';
+import {
+  Avatar,
+  Title,
+  Caption,
+  Paragraph,
+  Drawer,
+  Text,
+  TouchableRipple,
+  Switch,
+} from 'react-native-paper';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+/**
+ * custom draer content using the react-native-paper library.
+ * @param {*} props - get props from the AppStackNavigation.
+ * @author Omar Aljazairy
+ * @version 1.0
+ * @todo - theme color - profile image - open and closed items
+ */
+export function DrawerContent(props) {
+  // used for the preference of the switch theme. set it to false as default
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
+
+  /**
+   * sets the value of the isDarkTheme to the opposite of what it is.
+   */
+  const toggleTheme = () => {
+    setIsDarkTheme(!isDarkTheme);
+  };
+
+  return (
+    &lt;SafeAreaView style={styles.safearea}>
+      &lt;DrawerContentScrollView {...props}>
+        &lt;View style={styles.useInfoSection}>
+          &lt;View style={styles.avatar}>
+            &lt;Avatar.Image
+              source={require('../../assets/fedal.png')}
+              size={100}
+            />
+            &lt;View style={styles.avatarInfo}>
+              &lt;Title style={styles.title}>Fedal&lt;/Title>
+              &lt;Caption style={styles.caption}>@fedal.net&lt;/Caption>
+            &lt;/View>
+          &lt;/View>
+
+          &lt;View style={styles.row}>
+            &lt;View style={styles.section}>
+              &lt;Paragraph style={[styles.paragraph, styles.caption]}>
+                15
+              &lt;/Paragraph>
+              &lt;Caption style={styles.caption}>Open Items&lt;/Caption>
+            &lt;/View>
+            &lt;View style={styles.section}>
+              &lt;Paragraph style={[styles.paragraph, styles.caption]}>
+                4
+              &lt;/Paragraph>
+              &lt;Caption style={styles.caption}>Bought Items&lt;/Caption>
+            &lt;/View>
+          &lt;/View>
+        &lt;/View>
+        &lt;Drawer.Section style={styles.drawerSection}>
+          &lt;DrawerItem
+            icon={({color, size}) => (
+              &lt;Icon name="home-outline" color={color} size={size} />
+            )}
+            label="Home"
+            onPress={() => props.navigation.navigate('HomeScreen')}
+          />
+          &lt;DrawerItem
+            icon={({color, size}) => (
+              &lt;Icon name="account-outline" color={color} size={size} />
+            )}
+            label="Contacts"
+            onPress={() => props.navigation.navigate('ChatScreen')}
+          />
+          &lt;DrawerItem
+            icon={({color, size}) => (
+              &lt;Icon name="face-profile" color={color} size={size} />
+            )}
+            label="Profile"
+            onPress={() => props.navigation.navigate('ProfileScreen')}
+          />
+        &lt;/Drawer.Section>
+        &lt;Drawer.Section title="Preference">
+          &lt;TouchableRipple
+            onPress={() => {
+              toggleTheme();
+            }}>
+            &lt;View style={styles.preference}>
+              &lt;Text>Dark Theme&lt;/Text>
+              &lt;View pointerEvents="none">
+                &lt;Switch value={isDarkTheme} />
+              &lt;/View>
+            &lt;/View>
+          &lt;/TouchableRipple>
+        &lt;/Drawer.Section>
+      &lt;/DrawerContentScrollView>
+      &lt;Drawer.Section style={styles.bottomDrawerSection}>
+        &lt;DrawerItem
+          icon={({color, size}) => (
+            &lt;Icon name="exit-to-app" color={color} size={size} />
+          )}
+          label="Sign Out"
+          onPress={() => props.navigation.navigate('SignOutScreen')}
+        />
+      &lt;/Drawer.Section>
+    &lt;/SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  safearea: {
+    flex: 1,
+  },
+  avatar: {
+    flexDirection: 'row',
+    marginTop: 15,
+  },
+  avatarInfo: {
+    marginLeft: 15,
+    marginTop: 30,
+    flexDirection: 'column',
+  },
+  useInfoSection: {
+    paddingLeft: 20,
+  },
+  title: {
+    fontSize: 16,
+    marginTop: 3,
+    fontWeight: 'bold',
+  },
+  caption: {
+    fontSize: 14,
+    lineHeight: 14,
+  },
+  row: {
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  section: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  paragraph: {
+    fontWeight: 'bold',
+    marginRight: 3,
+  },
+  drawerSection: {
+    marginTop: 15,
+  },
+  bottomDrawerSection: {
+    marginBottom: 15,
+    borderTopColor: '#f4f4f4',
+    borderTopWidth: 1,
+  },
+  preference: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="CustomActivityIndicator.html">CustomActivityIndicator</a></li><li><a href="ForgotPassword.html">ForgotPassword</a></li><li><a href="SignOut.html">SignOut</a></li><li><a href="SignUp.html">SignUp</a></li></ul><h3>Global</h3><ul><li><a href="global.html#DrawerContent">DrawerContent</a></li><li><a href="global.html#DrawerStack">DrawerStack</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Sat Apr 18 2020 22:03:07 GMT+0200 (Central European Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
