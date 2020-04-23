@@ -1,31 +1,32 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
+ * Shoppinglist App
+ * https://github.com:omaraljazairy/Shoppinglist
  *
- * @format
- * @flow strict-local
+ * @author Omar Aljazairy
+ * @version 1.0
  */
 
-// import React, {useEffect} from 'react';
 import React from 'react';
-// import AuthhNavigator from './navigations/AuthStackNavigator';
 import AppNavigator from './navigations/AppStackNavigator';
-// import DrawNavigator from './navigations/DrawNavigator';
+import {existsStorage, getStorage} from './services/utils/securestorage';
 
-// import {
-//   Header,
-//   LearnMoreLinks,
-//   Colors,
-//   DebugInstructions,
-//   ReloadInstructions,
-// } from 'react-native/Libraries/NewAppScreen';
-
-//import SplashScreen from 'react-native-splash-screen';
+/**
+ * loads users preference when the application is loaded.
+ */
+async function _getAllPreference() {
+  try {
+    // check if the darkTheme key exists, if not return false.
+    const exists = await existsStorage('darkTheme');
+    console.log('preference exists: ', exists);
+    const preference = exists ? await getStorage('darkTheme') : false;
+    return preference;
+  } catch (error) {
+    console.log('error: ', error);
+  }
+}
 
 export default function App() {
-  // useEffect(() => {
-  //   SplashScreen.hide();
-  // }, []);
+  _getAllPreference();
 
   return <AppNavigator />;
 }

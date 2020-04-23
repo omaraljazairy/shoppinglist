@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import Fonts from '../../constants/Fonts';
 import {
   Avatar,
   Title,
@@ -12,6 +11,7 @@ import {
   TouchableRipple,
   Switch,
 } from 'react-native-paper';
+import {setStorage} from '../../services/utils/securestorage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 /**
@@ -28,9 +28,12 @@ export function DrawerContent(props) {
   /**
    * sets the value of the isDarkTheme to the opposite of what it is.
    */
-  const toggleTheme = () => {
+  async function toggleTheme() {
     setIsDarkTheme(!isDarkTheme);
-  };
+    console.log('isDarkTheme: ', isDarkTheme);
+    let theme = isDarkTheme ? 'true' : 'false';
+    await setStorage('darkTheme', theme);
+  }
 
   return (
     <SafeAreaView style={styles.safearea}>
