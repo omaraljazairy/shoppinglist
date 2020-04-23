@@ -1,5 +1,8 @@
 Release Summary
 
-
+1.2, April 23, 2020
+    create the service/utils folder with the securestorage as first service 
+    to be used in the application. the service uses the securestorage library 
+    which uses the secured keychain on ios and android to store data.
 1.1, April 18, 2020
      added navigations to the app.
