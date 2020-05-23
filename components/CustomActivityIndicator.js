@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { View, ActivityIndicator, StyleSheet } from 'react-native'
+import React, {Component} from 'react';
+import {View, ActivityIndicator, StyleSheet} from 'react-native';
 /**
  * is a custum activityIndicator to be used in this app.
  * it requires the following props:
@@ -11,7 +11,7 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native'
  */
 
 class CustomActivityIndicator extends Component {
-  render () {
+  render() {
     return (
       <View style={styles.container}>
         <ActivityIndicator
@@ -21,7 +21,7 @@ class CustomActivityIndicator extends Component {
           size={this.props.size}
         />
       </View>
-    )
+    );
   }
 }
 
@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 70
+    marginTop: 70,
   },
   activityIndicator: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 80
-  }
-})
+    height: 80,
+  },
+});
 
-export default CustomActivityIndicator
+export default CustomActivityIndicator;

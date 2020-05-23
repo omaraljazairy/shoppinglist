@@ -3,32 +3,55 @@
  * https://github.com:omaraljazairy/Shoppinglist
  *
  * @author Omar Aljazairy
- * @version 1.0
+ * @version 1.1
  */
 
 import React from 'react';
-import AppNavigator from './navigations/AppStackNavigator';
+import RootNavigator from './navigations/RootNavigator';
+import {createStore, combineReducers} from 'redux';
+import {Provider} from 'react-redux';
+import localeReducer from './stores/reducers/locales';
+import i18n from 'i18n-js';
 import {existsStorage, getStorage} from './services/utils/securestorage';
-
-/**
- * loads users preference when the application is loaded.
- */
-async function _getAllPreference() {
-  try {
-    // check if the darkTheme key exists, if not return false.
-    const exists = await existsStorage('darkTheme');
-    console.log('preference exists: ', exists);
-    const preference = exists ? await getStorage('darkTheme') : false;
-    return preference;
-  } catch (error) {
-    console.log('error: ', error);
-  }
-}
+import StorageKeys from './constants/StorageKeys';
 
 export default function App() {
-  _getAllPreference();
+  const [language, setLanguage] = React.useState('en');
 
-  return <AppNavigator />;
+  /**
+   * get the language from the secureStorage. if not found,
+   * use the default language to en and store it in the
+   * redux reducer.
+   */
+  React.useEffect(() => {
+    console.log('useEffect called');
+    async function _getAllPreference() {
+      try {
+        const language_exists = await existsStorage(StorageKeys.LANGUAGECODE);
+        const user_language = language_exists
+          ? await getStorage(StorageKeys.LANGUAGECODE)
+          : 'en';
+        setLanguage(user_language);
+        i18n.locale = user_language;
+      } catch (error) {
+        console.log('error: ', error);
+      }
+    }
+    _getAllPreference();
+  }, []);
+
+  // redux store
+  const rootReducer = combineReducers({
+    locales: localeReducer,
+  });
+
+  // set the initial value for the reducers.
+  const initialValues = {locales: {language: language}};
+  const store = createStore(rootReducer, initialValues);
+
+  return (
+    <Provider store={store}>
+      <RootNavigator />
+    </Provider>
+  );
 }
-
-// export default App;

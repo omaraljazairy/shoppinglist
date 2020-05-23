@@ -1,19 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {StyleSheet, View, SafeAreaView} from 'react-native';
 import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
-import {
-  Avatar,
-  Title,
-  Caption,
-  Paragraph,
-  Drawer,
-  Text,
-  TouchableRipple,
-  Switch,
-} from 'react-native-paper';
-import {setStorage} from '../../services/utils/securestorage';
+import {Avatar, Title, Caption, Paragraph, Drawer} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {firebase} from '@react-native-firebase/auth';
+import {AuthContext} from '../../contexts/auth';
+import CustomActivityIndicator from '../../components/CustomActivityIndicator';
 /**
  * custom draer content using the react-native-paper library.
  * @param {*} props - get props from the AppStackNavigation.
@@ -22,97 +14,100 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
  * @todo - theme color - profile image - open and closed items
  */
 export function DrawerContent(props) {
-  // used for the preference of the switch theme. set it to false as default
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const context = useContext(AuthContext);
 
   /**
-   * sets the value of the isDarkTheme to the opposite of what it is.
+   * signout from the app and return the user to the main screen.
    */
-  async function toggleTheme() {
-    setIsDarkTheme(!isDarkTheme);
-    console.log('isDarkTheme: ', isDarkTheme);
-    let theme = isDarkTheme ? 'true' : 'false';
-    await setStorage('darkTheme', theme);
+  async function __signOut() {
+    setIsLoading(true);
+    await firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        console.log('signed out successfully: ');
+        context.signOut();
+      })
+      .catch(error => {
+        console.log('signout failed with error: ', error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
-  return (
-    <SafeAreaView style={styles.safearea}>
-      <DrawerContentScrollView {...props}>
-        <View style={styles.useInfoSection}>
-          <View style={styles.avatar}>
-            <Avatar.Image
-              source={require('../../assets/fedal.png')}
-              size={100}
-            />
-            <View style={styles.avatarInfo}>
-              <Title style={styles.title}>Fedal</Title>
-              <Caption style={styles.caption}>@fedal.net</Caption>
-            </View>
-          </View>
-
-          <View style={styles.row}>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                15
-              </Paragraph>
-              <Caption style={styles.caption}>Open Items</Caption>
-            </View>
-            <View style={styles.section}>
-              <Paragraph style={[styles.paragraph, styles.caption]}>
-                4
-              </Paragraph>
-              <Caption style={styles.caption}>Bought Items</Caption>
-            </View>
-          </View>
-        </View>
-        <Drawer.Section style={styles.drawerSection}>
-          <DrawerItem
-            icon={({color, size}) => (
-              <Icon name="home-outline" color={color} size={size} />
-            )}
-            label="Home"
-            onPress={() => props.navigation.navigate('HomeScreen')}
-          />
-          <DrawerItem
-            icon={({color, size}) => (
-              <Icon name="account-outline" color={color} size={size} />
-            )}
-            label="Contacts"
-            onPress={() => props.navigation.navigate('ChatScreen')}
-          />
-          <DrawerItem
-            icon={({color, size}) => (
-              <Icon name="face-profile" color={color} size={size} />
-            )}
-            label="Profile"
-            onPress={() => props.navigation.navigate('ProfileScreen')}
-          />
-        </Drawer.Section>
-        <Drawer.Section title="Preference">
-          <TouchableRipple
-            onPress={() => {
-              toggleTheme();
-            }}>
-            <View style={styles.preference}>
-              <Text>Dark Theme</Text>
-              <View pointerEvents="none">
-                <Switch value={isDarkTheme} />
+  if (isLoading) {
+    console.log('loading is true');
+    return (
+      <CustomActivityIndicator active={isLoading} color="red" size="large" />
+    );
+  } else {
+    return (
+      <SafeAreaView style={styles.safearea}>
+        <DrawerContentScrollView {...props}>
+          <View style={styles.useInfoSection}>
+            <View style={styles.avatar}>
+              <Avatar.Image
+                source={require('../../assets/fedal.png')}
+                size={100}
+              />
+              <View style={styles.avatarInfo}>
+                <Title style={styles.title}>Fedal</Title>
+                <Caption style={styles.caption}>@fedal.net</Caption>
               </View>
             </View>
-          </TouchableRipple>
+            <View style={styles.row}>
+              <View style={styles.section}>
+                <Paragraph style={[styles.paragraph, styles.caption]}>
+                  15
+                </Paragraph>
+                <Caption style={styles.caption}>Open Items</Caption>
+              </View>
+              <View style={styles.section}>
+                <Paragraph style={[styles.paragraph, styles.caption]}>
+                  4
+                </Paragraph>
+                <Caption style={styles.caption}>Bought Items</Caption>
+              </View>
+            </View>
+          </View>
+          <Drawer.Section style={styles.drawerSection}>
+            <DrawerItem
+              icon={({color, size}) => (
+                <Icon name="home-outline" color={color} size={size} />
+              )}
+              label="Home"
+              onPress={() => props.navigation.navigate('HomeScreen')}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <Icon name="account-outline" color={color} size={size} />
+              )}
+              label="Contacts"
+              onPress={() => props.navigation.navigate('ChatScreen')}
+            />
+            <DrawerItem
+              icon={({color, size}) => (
+                <Icon name="face-profile" color={color} size={size} />
+              )}
+              label="Profile"
+              onPress={() => props.navigation.navigate('ProfileScreen')}
+            />
+          </Drawer.Section>
+        </DrawerContentScrollView>
+        <Drawer.Section style={styles.bottomDrawerSection}>
+          <DrawerItem
+            icon={({color, size}) => (
+              <Icon name="exit-to-app" color={color} size={size} />
+            )}
+            label="Sign Out"
+            onPress={() => __signOut()}
+          />
         </Drawer.Section>
-      </DrawerContentScrollView>
-      <Drawer.Section style={styles.bottomDrawerSection}>
-        <DrawerItem
-          icon={({color, size}) => (
-            <Icon name="exit-to-app" color={color} size={size} />
-          )}
-          label="Sign Out"
-          onPress={() => props.navigation.navigate('SignOutScreen')}
-        />
-      </Drawer.Section>
-    </SafeAreaView>
-  );
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -144,6 +139,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  language: {
+    marginTop: 5,
+    marginRight: 20,
   },
   section: {
     flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {useContext} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   StatusBar,
   Button,
 } from 'react-native';
+
 import {AuthContext} from '../../contexts/auth';
 
 /**
@@ -16,40 +17,29 @@ import {AuthContext} from '../../contexts/auth';
  * @version 1.0
  */
 
-class SignOut extends Component {
+const SignOut = () => {
   // the authcontext added
-  static contextType = AuthContext;
+  const auth = useContext(AuthContext);
 
-  /**
-   * set any values to be initialized by the constructor.
-   * @param {*} props
-   */
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    console.log(this.context);
-    return (
-      <>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView style={styles.container}>
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView style={styles.container}>
+        <View>
           <View>
-            <View>
-              <Text>SignOut Screen</Text>
-              <Button
-                title="SignOut"
-                onPress={() => {
-                  this.context.signOut();
-                }}
-              />
-            </View>
+            <Text>SignOut Screen</Text>
+            <Button
+              title="SignOut"
+              onPress={() => {
+                auth.signOut();
+              }}
+            />
           </View>
-        </SafeAreaView>
-      </>
-    );
-  }
-}
+        </View>
+      </SafeAreaView>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

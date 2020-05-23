@@ -28,14 +28,14 @@ export async function setStorage(key, value) {
  * @param {sring} key - the stored key preference.
  */
 export async function deleteStorage(key) {
-  RNSecureStorage.remove(key)
-    .then(result => {
-      console.log('result: ', result);
-    })
-    .catch(error => {
-      console.log('error deleting data: ', error);
-      return error;
-    });
+  console.log('key to search for: ', key);
+  try {
+    const result = await RNSecureStorage.remove(key);
+    console.log('result: ', result);
+    return result;
+  } catch (e) {
+    console.log('exception removing data: ', e);
+  }
 }
 
 /**
@@ -43,15 +43,14 @@ export async function deleteStorage(key) {
  * @param {sring} key - the stored key.
  */
 export async function getStorage(key) {
-  RNSecureStorage.get(key)
-    .then(result => {
-      console.log('result: ', result);
-      return result;
-    })
-    .catch(error => {
-      console.log('error getting data: ', error);
-      return error;
-    });
+  console.log('key to search for: ', key);
+  try {
+    const data = await RNSecureStorage.get(key);
+    console.log('data: ', data);
+    return data;
+  } catch (e) {
+    console.log('exception getting data: ', e);
+  }
 }
 
 /**
@@ -59,13 +58,12 @@ export async function getStorage(key) {
  * @param {sring} key - the stored key.
  */
 export async function existsStorage(key) {
-  RNSecureStorage.exists(key)
-    .then(result => {
-      console.log('result: ', result);
-      return result;
-    })
-    .catch(error => {
-      console.log('error getting data: ', error);
-      return error;
-    });
+  try {
+    const exists = await RNSecureStorage.exists(key);
+    console.log('key: ', key, ' exists: ', exists);
+    return exists;
+  } catch (e) {
+    console.log('exception finding key: ', e);
+    return e;
+  }
 }

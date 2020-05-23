@@ -1,22 +1,22 @@
-import React, {Component} from 'react';
+import React, {useContext} from 'react';
 import {SafeAreaView, StyleSheet, View, Text, StatusBar} from 'react-native';
+import {AuthContext} from '../../contexts/auth';
 
-class Email extends Component {
-  render() {
-    return (
-      <>
-        <StatusBar barStyle="dark-content" />
-        <SafeAreaView style={styles.container}>
+const Email = () => {
+  const auth = useContext(AuthContext);
+  return (
+    <>
+      <StatusBar barStyle="dark-content" />
+      <SafeAreaView style={styles.container}>
+        <View>
           <View>
-            <View>
-              <Text>Email Screen</Text>
-            </View>
+            <Text>Email Screen</Text>
           </View>
-        </SafeAreaView>
-      </>
-    );
-  }
-}
+        </View>
+      </SafeAreaView>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
