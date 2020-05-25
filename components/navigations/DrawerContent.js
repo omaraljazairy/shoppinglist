@@ -27,13 +27,11 @@ export function DrawerContent(props) {
       .signOut()
       .then(() => {
         console.log('signed out successfully: ');
+        setIsLoading(false);
         context.signOut();
       })
       .catch(error => {
         console.log('signout failed with error: ', error);
-      })
-      .finally(() => {
-        setIsLoading(false);
       });
   }
 

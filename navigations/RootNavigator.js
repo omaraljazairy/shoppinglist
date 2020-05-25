@@ -13,7 +13,6 @@ import SplashScreen from 'react-native-splash-screen';
 import {AuthContext} from '../contexts/auth';
 import AuthScreenStack from './AuthStackNavigator';
 import DrawerScreenStack from './DrawerNavigator';
-import {firebase} from '@react-native-firebase/auth';
 
 const RootStack = createStackNavigator();
 
@@ -45,17 +44,9 @@ const RootScreenStack = ({userToken}) => (
 const RootNavigator = props => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userToken, setUserToken] = React.useState(null);
-  //   const [initializing, setInitializing] = React.useState(false);
 
-  // Check if user is authenticated.
-  const __isUserAuthenticated = () => {
-    // setInitializing(true);
-    let user = firebase.auth().currentUser;
-    console.log('isUserAthenticated return user: ', user);
-    if (user) {
-      setUserToken(user);
-    }
-  };
+  console.log('props received from App: ', props.userToken);
+  console.log('userToken: ', userToken);
 
   // use the useMemo to avoid rerending when the function is the same.
   const authContext = React.useMemo(() => {
@@ -84,22 +75,13 @@ const RootNavigator = props => {
   }, []);
 
   React.useEffect(() => {
-    console.log('useEffect called with userToken');
-    const checkUser = async () => {
-      const user = firebase.auth().currentUser;
-      console.log('user checking: ', user);
-      if (user) {
-        setUserToken(user.uid);
-        return;
-      } else {
-        return;
-      }
-    };
-    setIsLoading(false);
-    // setInitializing(false);
-    SplashScreen.hide();
-    return checkUser;
-  }, []);
+    setTimeout(() => {
+      console.log('useEffect called with userToken');
+      setIsLoading(false);
+      setUserToken(props.userToken);
+      SplashScreen.hide();
+    }, 2000);
+  }, [props.userToken]);
 
   if (isLoading) {
     console.log('loading is true');

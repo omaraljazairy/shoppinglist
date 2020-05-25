@@ -6,6 +6,8 @@
   "EMAIL_ALREADY_IN_USE": "The email address is already in use by another account.",
   "FACEBOOK": "Facebook",
   "FORGOT_PASSWORD": "Forgot Passowrd ?",
+  "FORGOT_PASSWORD_EMAIL_ALERT": "An email is sent to you with a link to reset your password.",
+  "FORGOT_PASSWORD_INSTRUCTION": "Enter your email address and click here",
   "GOOGLE": "Google",
   "INSUFFICIENT_PERMISSION": "You do not have permissions",
   "INTRO": "Introduction Page",

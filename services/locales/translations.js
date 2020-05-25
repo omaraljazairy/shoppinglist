@@ -32,7 +32,7 @@ i18n.defaultLocale = 'en';
  * @returns translation string.
  */
 export function translate(text) {
-  console.log('text received to be translated: ', text);
+  // console.log('text received to be translated: ', text);
   const translation = i18n.t(text);
   // const country = RNLocalize.getCountry();
   // const currency = RNLocalize.getCurrencies();
