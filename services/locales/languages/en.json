@@ -1,6 +1,6 @@
  {
-
-  "CLAIMS_TOO_LARGE": "The claims payload provided to setCustomUserClaims() exceeds the maximum allowed size of 1000 bytes",
+ "CLAIMS_TOO_LARGE": "The claims payload provided to setCustomUserClaims() exceeds the maximum allowed size of 1000 bytes",
+  "CREATED": "Created",
   "EMAIL_ADDRESS": "Email address",
   "EMAIL_ALREADY_EXISTS": "Email Already Exists",
   "EMAIL_ALREADY_IN_USE": "The email address is already in use by another account.",
@@ -14,11 +14,13 @@
   "INTRO_WELCOME_HEADER": "Welcome to MyShoppinglist",
   "INTRO_WELCOME_BODY": "Please Login to access the application",
   "INVALID_EMAIL": "Invalid Email Address",
+  "LAST_LOGGEDIN": "Last time logged in",
   "LOGIN": "Login",
   "NEXT": "Next",
   "NO_ACCOUNT_YET": "no account yet? ",
   "NO_PERMISSION": "You do not have permission to use the Camera.",
   "PASSWORD": "Password",
+  "SAVE": "Save",
   "SCREEN_HEADER_INTRO": "Introduction",
   "SCREEN_HEADER_SIGNIN": "Log in",
   "SCREEN_HEADER_SIGNOUT": "Log out",

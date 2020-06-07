@@ -3,11 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>567163262874-2cagu6jsun4d07e8lv53u4s61536qsbn.apps.googleusercontent.com</string>
+	<string>567163262874-258efdqcfoq5atktnriesavmjbac2mom.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.567163262874-2cagu6jsun4d07e8lv53u4s61536qsbn</string>
-	<key>ANDROID_CLIENT_ID</key>
-	<string>567163262874-e8cpspka8v3i0nafcf0imlqnh7brrodt.apps.googleusercontent.com</string>
+	<string>com.googleusercontent.apps.567163262874-258efdqcfoq5atktnriesavmjbac2mom</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDLB57ftiJYGuunSpTqJ30341ik6Ug4WXw</string>
 	<key>GCM_SENDER_ID</key>
@@ -31,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:567163262874:ios:dceb233d4e654f2ba0cc23</string>
+	<string>1:567163262874:ios:11dd1b19bfd096dfa0cc23</string>
 	<key>DATABASE_URL</key>
 	<string>https://shoppinglist-e7f43.firebaseio.com</string>
 </dict>

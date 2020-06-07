@@ -18,10 +18,11 @@ import moment from 'moment';
  */
 export function getLocaleDateTime(datetime, locale = 'en') {
   // convert the datetime string to an int and pass it to the Date object to be back a Date
-  const dateObject = new Date(parseInt(datetime));
+  // const dateObject = new Date(parseInt(datetime));
+  const dateObject = new Date(datetime);
 
   // format the dateObject to a string using the locale passed with the options object.
-  var myeslocal = locale === 'es' ? require('moment/locale/es') : null;
+  var myeslocal = locale === 'es' ? require('moment/locale/es') : locale;
   moment.updateLocale(locale, myeslocal); // set locale
   console.log('localeLocale LLLL: ', moment(dateObject).format('LLLL'));
 

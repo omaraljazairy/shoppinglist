@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {firebase} from '@react-native-firebase/auth';
 import {AuthContext} from '../../contexts/auth';
 import CustomActivityIndicator from '../../components/CustomActivityIndicator';
+import {useSelector} from 'react-redux';
 /**
  * custom draer content using the react-native-paper library.
  * @param {*} props - get props from the AppStackNavigation.
@@ -16,6 +17,7 @@ import CustomActivityIndicator from '../../components/CustomActivityIndicator';
 export function DrawerContent(props) {
   const [isLoading, setIsLoading] = useState(false);
   const context = useContext(AuthContext);
+  const user = useSelector(state => state.user.userDate);
 
   /**
    * signout from the app and return the user to the main screen.
@@ -41,18 +43,23 @@ export function DrawerContent(props) {
       <CustomActivityIndicator active={isLoading} color="red" size="large" />
     );
   } else {
+    console.log('user photoURL: ', user.profile.photoURL);
     return (
       <SafeAreaView style={styles.safearea}>
         <DrawerContentScrollView {...props}>
           <View style={styles.useInfoSection}>
             <View style={styles.avatar}>
               <Avatar.Image
-                source={require('../../assets/fedal.png')}
+                source={
+                  user.profile.photoURL
+                    ? {uri: user.profile.photoURL}
+                    : require('../../assets/account.png')
+                }
                 size={100}
               />
               <View style={styles.avatarInfo}>
-                <Title style={styles.title}>Fedal</Title>
-                <Caption style={styles.caption}>@fedal.net</Caption>
+                <Title style={styles.title}>{user.profile.displayName}</Title>
+                <Caption style={styles.caption}>{user.profile.email}</Caption>
               </View>
             </View>
             <View style={styles.row}>

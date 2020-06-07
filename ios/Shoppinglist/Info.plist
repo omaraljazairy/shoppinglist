@@ -27,33 +27,18 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.567163262874-258efdqcfoq5atktnriesavmjbac2mom</string>
+				<string>com.googleusercontent.apps.567163262874-2cagu6jsun4d07e8lv53u4s61536qsbn</string>
 			</array>
 		</dict>
 		<dict>
 			<key>CFBundleURLSchemes</key>
-				<array>
-					<string>fb250442592964540</string>
-				</array>
+			<array>
+				<string>fb250442592964540</string>
+			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
 	<key>FacebookAppID</key>
 	<string>250442592964540</string>
 	<key>FacebookDisplayName</key>
@@ -76,7 +61,21 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
-
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>

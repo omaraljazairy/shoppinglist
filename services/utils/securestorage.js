@@ -13,9 +13,10 @@ import RNSecureStorage, {ACCESSIBLE} from 'rn-secure-storage';
  * @param {string} value - value of the preference to be stored.
  */
 export async function setStorage(key, value) {
-  RNSecureStorage.set(key, value, {accessible: ACCESSIBLE.WHEN_UNLOCKED})
+  const val = JSON.stringify(value);
+  RNSecureStorage.set(key, val, {accessible: ACCESSIBLE.WHEN_UNLOCKED})
     .then(res => {
-      console.log('key: ', key, ' & value: ', value, ' stored');
+      console.log('key: ', key, ' & value: ', val, ' stored');
       console.log('res: ', res);
     })
     .catch(error => {
@@ -45,11 +46,18 @@ export async function deleteStorage(key) {
 export async function getStorage(key) {
   console.log('key to search for: ', key);
   try {
-    const data = await RNSecureStorage.get(key);
-    console.log('data: ', data);
-    return data;
+    const exists = await RNSecureStorage.exists(key);
+    if (exists) {
+      const data = await RNSecureStorage.get(key);
+      console.log('data: ', data);
+      return JSON.parse(data);
+    } else {
+      console.log('key ', key, ' does not exist');
+      return false;
+    }
   } catch (e) {
     console.log('exception getting data: ', e);
+    return false;
   }
 }
 

@@ -11,24 +11,13 @@ import RootNavigator from './navigations/RootNavigator';
 import {createStore, combineReducers} from 'redux';
 import {Provider} from 'react-redux';
 import localeReducer from './stores/reducers/locales';
+import userReducer from './stores/reducers/user';
 import i18n from 'i18n-js';
 import {existsStorage, getStorage} from './services/utils/securestorage';
 import StorageKeys from './constants/StorageKeys';
-import {firebase} from '@react-native-firebase/auth';
 
 export default function App() {
   const [language, setLanguage] = React.useState('en');
-  const [userToken, setUserToken] = React.useState(null);
-
-  // Check if user is authenticated.
-  const __isUserAuthenticated = () => {
-    console.log('checkUserstatus is going to be executed');
-    let user = firebase.auth().currentUser;
-    console.log('isUserAthenticated return user: ', user);
-    if (user) {
-      setUserToken(user.uid);
-    }
-  };
 
   /**
    * get the language from the secureStorage. if not found,
@@ -50,12 +39,12 @@ export default function App() {
       }
     }
     _getAllPreference();
-    __isUserAuthenticated();
   }, []);
 
   // redux store
   const rootReducer = combineReducers({
     locales: localeReducer,
+    user: userReducer,
   });
 
   // set the initial value for the reducers.
@@ -64,7 +53,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <RootNavigator userToken={userToken} />
+      <RootNavigator />
     </Provider>
   );
 }

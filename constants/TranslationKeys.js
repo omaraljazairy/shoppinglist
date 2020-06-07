@@ -3,6 +3,7 @@ export default {
   // B
   // C
   CLAIMS_TOO_LARGE: 'CLAIMS_TOO_LARGE',
+  CREATED: 'CREATED',
   // D
   // E
   EMAIL_ADDRESS: 'EMAIL_ADDRESS',
@@ -25,6 +26,7 @@ export default {
   // J
   // K
   // L
+  LAST_LOGGEDIN: 'LAST_LOGGEDIN',
   LOGIN: 'LOGIN',
   // M
   // N
@@ -37,6 +39,7 @@ export default {
   // Q
   // R
   // S
+  SAVE: 'SAVE',
   SCREEN_HEADER_INTRO: 'SCREEN_HEADER_INTRO',
   SCREEN_HEADER_SIGNIN: 'SCREEN_HEADER_SIGNIN',
   SCREEN_HEADER_SIGNOUT: 'SCREEN_HEADER_SIGNOUT',

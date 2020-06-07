@@ -13,6 +13,11 @@ import {
 import auth from '@react-native-firebase/auth';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
 import {GoogleSignin} from '@react-native-community/google-signin';
+import appleAuth, {
+  AppleButton,
+  AppleAuthRequestOperation,
+  AppleAuthRequestScope,
+} from '@invertase/react-native-apple-authentication';
 import googleConfigs from '../../configs/google';
 import DismissKeyboard from '../../components/DismissKeyboard';
 import {AuthContext} from '../../contexts/auth';
@@ -103,9 +108,9 @@ class SignIn extends Component {
           'response success additionalUserInfo: ',
           response.additionalUserInfo,
         );
-        console.log('response success user: ', response.user);
+        // console.log('response success user: ', response.user);
         this.setState({...this.state, isLoading: false});
-        this.context.signIn();
+        this.context.signIn(response, 'emptyToken');
       })
       .catch(error => {
         console.log('error from firebase login: ');
@@ -170,7 +175,7 @@ class SignIn extends Component {
   async __doGoogleLogIn() {
     console.log('GoogleLogin pressed');
     // initialize the google SDK
-    console.log('webClientId to be used: ', googleConfigs.webClientId);
+    // console.log('webClientId to be used: ', googleConfigs.webClientId);
     GoogleSignin.configure({
       webClientId: googleConfigs.webClientId,
       scopes: ['https://www.googleapis.com/auth/userinfo.profile'],
@@ -182,8 +187,8 @@ class SignIn extends Component {
       await GoogleSignin.hasPlayServices();
       await GoogleSignin.signIn()
         .then(user => {
-          console.log('response from Google.SignIn user: ', user);
-          console.log('idToken from google: ', user.idToken);
+          // console.log('response from Google.SignIn user: ', user);
+          // console.log('idToken from google: ', user.idToken);
           // use the token to create the google credentails.
           const googleCredentials = auth.GoogleAuthProvider.credential(
             user.idToken,
@@ -192,8 +197,8 @@ class SignIn extends Component {
           auth()
             .signInWithCredential(googleCredentials)
             .then(response => {
-              console.log('response from google: ', response);
-              this.context.signIn();
+              // console.log('response from google: ', response);
+              this.context.signIn(response, user.idToken);
             })
             .catch(error => {
               console.log('Error from firebase google: ', error);
@@ -208,44 +213,6 @@ class SignIn extends Component {
         });
     } catch (error) {
       console.log('Error from google: ', error);
-    }
-  }
-
-  /**
-   * login to the google - firebase api.
-   */
-  async __doGoogleLogIn2() {
-    console.log('GoogleLogin pressed');
-    // initialize the google SDK
-    GoogleSignin.configure({
-      webClientId: googleConfigs.webClientId,
-    });
-    // trigger the google sigin api which will redirect the user
-    // to the google site for authentication.
-    // This will return a token.
-
-    try {
-      const {idToken} = await GoogleSignin.signIn();
-      console.log('idToken from google: ', idToken);
-      // use the token to create the google credentails.
-      const googleCredentials = auth.GoogleAuthProvider.credential(idToken);
-      console.log('google credentials returned: ', googleCredentials);
-
-      auth()
-        .signInWithCredential(googleCredentials)
-        .then(response => {
-          console.log('response from google: ', response);
-          this.context.signIn();
-        })
-        .catch(error => {
-          console.log('Error from firebase google: ', error);
-          let errMsg = getError(error.code)
-            ? translate(getError(error.code))
-            : error.message;
-          Alert.alert('ERROR', errMsg);
-        });
-    } catch (error) {
-      console.log('error from google service: ', error);
     }
   }
 
@@ -272,7 +239,7 @@ class SignIn extends Component {
     }
 
     // call the firebase api with the facebook accesstoken.
-    console.log('data from facebook AccessToken: ', data);
+    // console.log('data from facebook AccessToken: ', data);
     const fbCredentials = auth.FacebookAuthProvider.credential(
       data.accessToken,
     );
@@ -280,8 +247,53 @@ class SignIn extends Component {
     auth()
       .signInWithCredential(fbCredentials)
       .then(response => {
-        console.log('response from facebook firebase: ', response);
-        this.context.signIn();
+        // console.log('response from facebook firebase: ', response);
+        this.context.signIn(response, data.accessToken);
+      })
+      .catch(error => {
+        console.log('Error from firebase facebook: ', error);
+        let errMsg = getError(error.code)
+          ? translate(getError(error.code))
+          : error.message;
+        Alert.alert('ERROR', errMsg);
+      });
+  }
+
+  /**
+   * Apple login for IOS 11 only
+   */
+
+  async __doAppleLogIn() {
+    console.log('AppleSignIn btn pressed');
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: AppleAuthRequestOperation.LOGIN,
+      requestedScopes: [
+        AppleAuthRequestScope.EMAIL,
+        AppleAuthRequestScope.FULL_NAME,
+      ],
+    });
+    console.log(
+      'appleAuthRequestResponse returned: ',
+      appleAuthRequestResponse,
+    );
+
+    const {identityToken, nonce} = appleAuthRequestResponse;
+    if (!identityToken) {
+      console.log('No identityToken returned');
+      Alert.alert('ERROR', 'No identityToken returned');
+    }
+    // console.log('identityToken: ', identityToken);
+    console.log('nonce: ', nonce);
+    const appleCredentials = auth.AppleAuthProvider.credential(
+      identityToken,
+      nonce,
+    );
+    console.log('appleCredentials: ', appleCredentials);
+    auth()
+      .signInWithCredential(appleCredentials)
+      .then(response => {
+        // console.log('response from apple firebase: ', response);
+        this.context.signIn(response, identityToken);
       })
       .catch(error => {
         console.log('Error from firebase facebook: ', error);
@@ -390,6 +402,17 @@ class SignIn extends Component {
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>
+                <View>
+                  {appleAuth.isSupported && (
+                    <AppleButton
+                      cornerRadius={5}
+                      style={styles.button}
+                      buttonStyle={AppleButton.Style.WHITE}
+                      buttonType={AppleButton.Type.SIGN_IN}
+                      onPress={() => this.__doAppleLogIn()}
+                    />
+                  )}
+                </View>
                 <TouchableOpacity
                   style={styles.signUpTextView}
                   onPress={() =>
@@ -475,6 +498,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     height: Platform.OS === 'ios' ? 40 : 25,
+  },
+  googleButton: {
+    alignItems: 'center',
+    marginTop: 20,
+    height: Platform.OS === 'ios' ? 50 : 48,
+    width: '100%',
   },
   signIn: {
     flexDirection: 'row',
